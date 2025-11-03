@@ -2,11 +2,11 @@ import "@typespec/http";
 import "@typespec/openapi";
 import "@typespec/openapi3";
 
-import "./clusters/core/model.tsp";
-import "./clusters/";
-import "./statuses/";
-import "./nodepools/";
-import "./compatibility/";
+import "../../providers/core/model.tsp";
+import "../../shared/clusters/";
+import "../../shared/statuses/";
+import "../../shared/nodepools/";
+import "../../shared/compatibility/";
 using Http;
 using OpenAPI;
 
@@ -27,3 +27,4 @@ using OpenAPI;
 @tagMetadata( "NodePool statuses", #{ description: "Status for NodePools" })
 @route("/api/hyperfleet/v1")
 namespace HyperFleet;
+
