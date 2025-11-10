@@ -15,41 +15,49 @@ model NodePoolBase {
    */
   spec: NodePoolSpec;
 }
+
+/**
+ * NodePool status aggregation from all adapters.
+ *
+ * This object is computed by the service and CANNOT be modified directly.
+ */
+model NodePoolStatus {
+  /**
+   * Current NodePool phase (native database column).
+   * Updated when adapters report status.
+   * Note: status.phase provides aggregated view from all adapter conditions.
+   */
+  phase: "NotReady" | "Ready" | "Failed";
+
+  /**
+   * Last generation processed by adapters
+   * Updated when adapters report status.
+   * This will be the lowest value of each adapter's observed_generation values
+   * The phase value is based on this generation
+   */
+  @minValue(1)
+  observed_generation: int32;
+
+  /**
+   * When NodePool last transitioned (updated by adapters, used by Sentinel for backoff)
+   */
+  @format("date-time") last_transition_time: string;
+
+  /** Time of the last complete report from adapters
+   * Updated when adapters report status.
+   * Oldest `updated_at` from the adapter conditions
+   */
+  @format("date-time") updated_at: string;
+
+  adapters: ConditionAvailable[];
+}
+
 model NodePool extends NodePoolBase{
 
     ...APICreatedResource;
     owner_references: ObjectReference;
 
-    status: {
-        /**
-         * Current NodePool phase (native database column).
-         * Updated when adapters report status.
-         * Note: status.phase provides aggregated view from all adapter conditions.
-         */
-        phase: "NotReady" | "Ready" | "Failed";
-
-        /**
-         * Last generation processed by adapters
-         * Updated when adapters report status.
-         * This will be the lowest value of each adapter's observed_generation values
-         * The phase value is based on this generation
-         */
-        @minValue(1)
-        observed_generation: int32;
-
-        /**
-         * When NodePool last transitioned (updated by adapters, used by Sentinel for backoff)
-         */
-        @format("date-time") last_transition_time: string;
-
-        /** Time of the last complete report from adapters
-         * Updated when adapters report status.
-         * Oldest `updated_at` from the adapter conditions
-         */
-        @format("date-time") updated_at: string;
-
-        adapters: ConditionAvailable[];
-    };
+    status: NodePoolStatus;
 }
 
 model NodePoolCreateRequest {

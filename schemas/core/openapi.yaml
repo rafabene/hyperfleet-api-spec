@@ -614,56 +614,7 @@ components:
           minimum: 1
           description: Generation field is updated on customer updates, reflecting the version of the "intent" of the customer
         status:
-          type: object
-          properties:
-            phase:
-              type: string
-              enum:
-                - NotReady
-                - Ready
-                - Failed
-              description: |-
-                Current cluster phase (native database column).
-                Updated when adapters report status.
-                Note: status.phase provides aggregated view from all adapter conditions.
-            last_transition_time:
-              type: string
-              format: date-time
-              description: |-
-                When cluster last transitioned (updated by adapters, used by Sentinel for backoff)
-                Updated when adapters report status if the phase changes
-            observed_generation:
-              type: integer
-              format: int32
-              description: |-
-                Last generation processed by adapters
-                Updated when adapters report status.
-                This will be the lowest value of each adapter's observed_generation values
-                The phase value is based on this generation
-            updated_at:
-              type: string
-              format: date-time
-              description: |-
-                Time of the last complete report from adapters
-                Updated when adapters report status.
-                Oldest `updated_at` from the adapter conditions
-            adapters:
-              type: array
-              items:
-                $ref: '#/components/schemas/ConditionAvailable'
-          required:
-            - phase
-            - last_transition_time
-            - observed_generation
-            - updated_at
-            - adapters
-          description: |-
-            Cluster status aggregation from all adapters.
-
-            This object is computed by the service and CANNOT be modified directly.
-            It is aggregated from adapter status updates posted to `/clusters/{id}/statuses`.
-
-            Provides quick overview of which adapters have reported and aggregated phase.
+          $ref: '#/components/schemas/ClusterStatus'
       allOf:
         - $ref: '#/components/schemas/ClusterBase'
       example:
@@ -674,9 +625,7 @@ components:
         labels:
           environment: production
           team: platform
-        spec:
-          coreProperty1: coreValue1
-          coreProperty2: coreValue2
+        spec: {}
         created_at: '2021-01-01T00:00:00Z'
         updated_at: '2021-01-01T00:00:00Z'
         generation: 1
@@ -721,8 +670,8 @@ components:
           pattern: ^[a-z0-9-]+$
           description: Cluster name (unique)
         spec:
-          type: object
-          additionalProperties: {}
+          allOf:
+            - $ref: '#/components/schemas/ClusterSpecCore'
           description: |-
             Cluster specification
             CLM doesn't know how to unmarshall the spec, it only stores and forwards to adapters to do their job
@@ -739,9 +688,7 @@ components:
         labels:
           environment: production
           team: platform
-        spec:
-          coreProperty1: coreValue1
-          coreProperty2: coreValue2
+        spec: {}
     ClusterList:
       type: object
       required:
@@ -753,6 +700,63 @@ components:
             $ref: '#/components/schemas/Cluster'
       allOf:
         - $ref: '#/components/schemas/List'
+    ClusterSpecCore:
+      type: object
+      description: |-
+        Core cluster specification.
+        Accepts any properties as the spec is provider-agnostic.
+        This is represented as a simple object to allow flexibility.
+    ClusterStatus:
+      type: object
+      required:
+        - phase
+        - last_transition_time
+        - observed_generation
+        - updated_at
+        - adapters
+      properties:
+        phase:
+          type: string
+          enum:
+            - NotReady
+            - Ready
+            - Failed
+          description: |-
+            Current cluster phase (native database column).
+            Updated when adapters report status.
+            Note: status.phase provides aggregated view from all adapter conditions.
+        last_transition_time:
+          type: string
+          format: date-time
+          description: |-
+            When cluster last transitioned (updated by adapters, used by Sentinel for backoff)
+            Updated when adapters report status if the phase changes
+        observed_generation:
+          type: integer
+          format: int32
+          description: |-
+            Last generation processed by adapters
+            Updated when adapters report status.
+            This will be the lowest value of each adapter's observed_generation values
+            The phase value is based on this generation
+        updated_at:
+          type: string
+          format: date-time
+          description: |-
+            Time of the last complete report from adapters
+            Updated when adapters report status.
+            Oldest `updated_at` from the adapter conditions
+        adapters:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConditionAvailable'
+      description: |-
+        Cluster status aggregation from all adapters.
+
+        This object is computed by the service and CANNOT be modified directly.
+        It is aggregated from adapter status updates posted to `/clusters/{id}/statuses`.
+
+        Provides quick overview of which adapters have reported and aggregated phase.
     Condition:
       type: object
       required:
@@ -924,48 +928,7 @@ components:
         owner_references:
           $ref: '#/components/schemas/ObjectReference'
         status:
-          type: object
-          properties:
-            phase:
-              type: string
-              enum:
-                - NotReady
-                - Ready
-                - Failed
-              description: |-
-                Current NodePool phase (native database column).
-                Updated when adapters report status.
-                Note: status.phase provides aggregated view from all adapter conditions.
-            observed_generation:
-              type: integer
-              format: int32
-              minimum: 1
-              description: |-
-                Last generation processed by adapters
-                Updated when adapters report status.
-                This will be the lowest value of each adapter's observed_generation values
-                The phase value is based on this generation
-            last_transition_time:
-              type: string
-              format: date-time
-              description: When NodePool last transitioned (updated by adapters, used by Sentinel for backoff)
-            updated_at:
-              type: string
-              format: date-time
-              description: |-
-                Time of the last complete report from adapters
-                Updated when adapters report status.
-                Oldest `updated_at` from the adapter conditions
-            adapters:
-              type: array
-              items:
-                $ref: '#/components/schemas/ConditionAvailable'
-          required:
-            - phase
-            - observed_generation
-            - last_transition_time
-            - updated_at
-            - adapters
+          $ref: '#/components/schemas/NodePoolStatus'
       allOf:
         - $ref: '#/components/schemas/NodePoolBase'
     NodePoolBase:
@@ -992,8 +955,8 @@ components:
           type: string
           description: NodePool name (unique in a cluster)
         spec:
-          type: object
-          additionalProperties: {}
+          allOf:
+            - $ref: '#/components/schemas/NodePoolSpecCore'
           description: |-
             Cluster specification
             CLM doesn't know how to unmarshall the spec, it only stores and forwards to adapters to do their job
@@ -1022,8 +985,8 @@ components:
           type: string
           description: NodePool name (unique in a cluster)
         spec:
-          type: object
-          additionalProperties: {}
+          allOf:
+            - $ref: '#/components/schemas/NodePoolSpecCore'
           description: |-
             Cluster specification
             CLM doesn't know how to unmarshall the spec, it only stores and forwards to adapters to do their job
@@ -1055,48 +1018,7 @@ components:
         owner_references:
           $ref: '#/components/schemas/ObjectReference'
         status:
-          type: object
-          properties:
-            phase:
-              type: string
-              enum:
-                - NotReady
-                - Ready
-                - Failed
-              description: |-
-                Current NodePool phase (native database column).
-                Updated when adapters report status.
-                Note: status.phase provides aggregated view from all adapter conditions.
-            observed_generation:
-              type: integer
-              format: int32
-              minimum: 1
-              description: |-
-                Last generation processed by adapters
-                Updated when adapters report status.
-                This will be the lowest value of each adapter's observed_generation values
-                The phase value is based on this generation
-            last_transition_time:
-              type: string
-              format: date-time
-              description: When NodePool last transitioned (updated by adapters, used by Sentinel for backoff)
-            updated_at:
-              type: string
-              format: date-time
-              description: |-
-                Time of the last complete report from adapters
-                Updated when adapters report status.
-                Oldest `updated_at` from the adapter conditions
-            adapters:
-              type: array
-              items:
-                $ref: '#/components/schemas/ConditionAvailable'
-          required:
-            - phase
-            - observed_generation
-            - last_transition_time
-            - updated_at
-            - adapters
+          $ref: '#/components/schemas/NodePoolStatus'
         labels:
           type: object
           additionalProperties:
@@ -1115,12 +1037,65 @@ components:
           type: string
           description: NodePool name (unique in a cluster)
         spec:
-          type: object
-          additionalProperties: {}
+          allOf:
+            - $ref: '#/components/schemas/NodePoolSpecCore'
           description: |-
             Cluster specification
             CLM doesn't know how to unmarshall the spec, it only stores and forwards to adapters to do their job
             But CLM will validate the schema before accepting the request
+    NodePoolSpecCore:
+      type: object
+      description: |-
+        Core nodepool specification.
+        Accepts any properties as the spec is provider-agnostic.
+        This is represented as a simple object to allow flexibility.
+    NodePoolStatus:
+      type: object
+      required:
+        - phase
+        - observed_generation
+        - last_transition_time
+        - updated_at
+        - adapters
+      properties:
+        phase:
+          type: string
+          enum:
+            - NotReady
+            - Ready
+            - Failed
+          description: |-
+            Current NodePool phase (native database column).
+            Updated when adapters report status.
+            Note: status.phase provides aggregated view from all adapter conditions.
+        observed_generation:
+          type: integer
+          format: int32
+          minimum: 1
+          description: |-
+            Last generation processed by adapters
+            Updated when adapters report status.
+            This will be the lowest value of each adapter's observed_generation values
+            The phase value is based on this generation
+        last_transition_time:
+          type: string
+          format: date-time
+          description: When NodePool last transitioned (updated by adapters, used by Sentinel for backoff)
+        updated_at:
+          type: string
+          format: date-time
+          description: |-
+            Time of the last complete report from adapters
+            Updated when adapters report status.
+            Oldest `updated_at` from the adapter conditions
+        adapters:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConditionAvailable'
+      description: |-
+        NodePool status aggregation from all adapters.
+
+        This object is computed by the service and CANNOT be modified directly.
     ObjectReference:
       type: object
       properties:

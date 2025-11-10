@@ -45,6 +45,37 @@ Contains service definitions that generate the OpenAPI specifications:
 - **`services/nodepools.tsp`** - NodePool resource endpoints
 - **`services/compatibility.tsp`** - Compatibility endpoints
 
+## Prerequisites
+
+### Install TypeSpec Compiler (Global)
+
+First, install the TypeSpec compiler globally to get the `tsp` command:
+
+```bash
+npm install -g @typespec/compiler
+```
+
+This provides the `tsp` CLI tool but **does not** install the project-specific dependencies.
+
+### Install Project Dependencies (Required)
+
+After cloning the repository, install the project's TypeSpec dependencies:
+
+```bash
+npm install
+```
+
+This installs all required TypeSpec libraries to the local `node_modules/` directory:
+- `@typespec/compiler` - TypeSpec compiler
+- `@typespec/http` - HTTP protocol support
+- `@typespec/rest` - REST API support
+- `@typespec/openapi` - OpenAPI decorators
+- `@typespec/openapi3` - OpenAPI 3.0 emitter
+
+**Why both?**
+- **Global install**: Provides the `tsp` command-line tool
+- **Local install**: Provides the TypeSpec libraries that your `.tsp` files import
+
 ## Building OpenAPI Specifications
 
 The repository uses a single `main.tsp` entry point. To generate either the core API or GCP API, you need to re-link the `aliases.tsp` file to point to the desired provider aliases file.
@@ -164,7 +195,7 @@ To add a new service (e.g., with additional endpoints):
 - `@typespec/openapi3` - OpenAPI 3.0 emitter
 
 
-## Deloping with the Visual Studio Typespec extension
+## Developing with the Visual Studio Typespec extension
 
 The repository works with different contracts (core and GCP) but a single Typespec `main.tsp`.
 This is accomplished by maintaining an `aliases.tsp` file that holds the "active" concrete types to use (core or GCP).

@@ -7,7 +7,7 @@ const exampleCluster: Cluster = #{
   href: "https://api.hyperfleet.com/v1/clusters/cluster-123",
   name: "cluster-123",
   labels: #{ environment: "production", team: "platform" },
-  spec: #{ coreProperty1: "coreValue1", coreProperty2: "coreValue2" },
+  spec: #{},
   created_at: "2021-01-01T00:00:00Z",
   updated_at: "2021-01-01T00:00:00Z",
   generation: 1,
