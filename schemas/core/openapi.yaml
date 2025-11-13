@@ -111,26 +111,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - page
-                  - size
-                  - total
-                  - items
-                properties:
-                  page:
-                    type: integer
-                    format: int32
-                  size:
-                    type: integer
-                    format: int32
-                  total:
-                    type: integer
-                    format: int32
-                  items:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/NodePool'
+                $ref: '#/components/schemas/NodePoolList'
         default:
           description: An unexpected error response.
           content:
@@ -167,6 +148,37 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/NodePoolCreateRequest'
+  /api/hyperfleet/v1/clusters/{cluster_id}/nodepools/{nodepool_id}:
+    get:
+      operationId: getNodePoolById
+      summary: Get nodepool by ID
+      description: Returns specific nodepool
+      parameters:
+        - name: cluster_id
+          in: path
+          required: true
+          description: Cluster ID
+          schema:
+            type: string
+        - name: nodepool_id
+          in: path
+          required: true
+          description: NodePool ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NodePool'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /api/hyperfleet/v1/clusters/{cluster_id}/nodepools/{nodepool_id}/statuses:
     get:
       operationId: getNodePoolsStatuses
@@ -195,26 +207,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - page
-                  - size
-                  - total
-                  - items
-                properties:
-                  page:
-                    type: integer
-                    format: int32
-                  size:
-                    type: integer
-                    format: int32
-                  total:
-                    type: integer
-                    format: int32
-                  items:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/AdapterStatus'
+                $ref: '#/components/schemas/AdapterStatusList'
         default:
           description: An unexpected error response.
           content:
@@ -284,26 +277,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - page
-                  - size
-                  - total
-                  - items
-                properties:
-                  page:
-                    type: integer
-                    format: int32
-                  size:
-                    type: integer
-                    format: int32
-                  total:
-                    type: integer
-                    format: int32
-                  items:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/AdapterStatus'
+                $ref: '#/components/schemas/AdapterStatusList'
         '404':
           description: The server cannot find the requested resource.
     post:
@@ -377,26 +351,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - page
-                  - size
-                  - total
-                  - items
-                properties:
-                  page:
-                    type: integer
-                    format: int32
-                  size:
-                    type: integer
-                    format: int32
-                  total:
-                    type: integer
-                    format: int32
-                  items:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/NodePool'
+                $ref: '#/components/schemas/NodePoolList'
         default:
           description: An unexpected error response.
           content:
@@ -561,6 +516,17 @@ components:
           type: object
           additionalProperties: {}
           description: Job execution metadata
+    AdapterStatusList:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdapterStatus'
+      allOf:
+        - $ref: '#/components/schemas/List'
     Cluster:
       type: object
       required:
@@ -1018,6 +984,17 @@ components:
             Cluster specification
             CLM doesn't know how to unmarshall the spec, it only stores and forwards to adapters to do their job
             But CLM will validate the schema before accepting the request
+    NodePoolList:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/NodePool'
+      allOf:
+        - $ref: '#/components/schemas/List'
     NodePoolSpecCore:
       type: object
       description: |-

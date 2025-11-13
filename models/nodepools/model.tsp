@@ -67,3 +67,7 @@ model NodePoolCreateRequest {
 model NodePoolCreateResponse {
     ...NodePool
 }
+
+model NodePoolList extends List {
+  items: NodePool[];
+}

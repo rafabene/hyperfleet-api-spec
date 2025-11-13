@@ -19,7 +19,7 @@ interface NodePools {
     @get
     @summary("List all nodepools for cluster")
     @operationId("getNodePools")
-    getNodePools(...QueryParams): Body<Page<NodePool>> | Error;
+    getNodePools(...QueryParams): Body<NodePoolList> | Error;
 
     /**
      * Returns the list of all nodepools for a cluster
@@ -33,7 +33,7 @@ interface NodePools {
         @path cluster_id: Identifier,
 
         ...QueryParams,
-    ): Body<Page<NodePool>> | Error;
+    ): Body<NodePoolList> | Error;
 
     /**
      * Create a NodePool for a cluster
@@ -50,4 +50,18 @@ interface NodePools {
     ):
          (CreatedResponse & NodePoolCreateResponse)
          | Error;
+
+    /**
+     * Returns specific nodepool
+     */
+    @route("/clusters/{cluster_id}/nodepools/{nodepool_id}")
+    @get
+    @summary("Get nodepool by ID")
+    @operationId("getNodePoolById")
+    getNodePoolById(
+        /** Cluster ID */
+        @path cluster_id: string,
+        /** NodePool ID */
+        @path nodepool_id: string,
+    ): NodePool | Error;
 }

@@ -120,3 +120,7 @@ model AdapterStatus {
     duration?: string;
   };
 }
+
+model AdapterStatusList extends List {
+  items: AdapterStatus[];
+}

@@ -26,7 +26,7 @@ interface ClusterStatuses{
      */
      @path cluster_id: string,
     ...QueryParams
-  ): Body< Page<AdapterStatus>> | NotFoundResponse;
+  ): Body<AdapterStatusList> | NotFoundResponse;
 
   /**
    * Adapter creates its initial status object for this cluster.
@@ -72,7 +72,7 @@ interface NodePoolStatuses{
      @path cluster_id: string,
      @path nodepool_id: string,
     ...QueryParams
-  ): Body< Page<AdapterStatus>> | Error;
+  ): Body<AdapterStatusList> | Error;
 
   /**
    * Adapter creates its initial status object for this cluster.
