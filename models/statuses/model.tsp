@@ -1,15 +1,16 @@
 import "../common/model.tsp";
 import "./example_adapter_status.tsp";
-/** Common data for status objects, part of:
- * - Status entity (stored in DB)
- * - Request payload
- */
-model ConditionBase {
-  /** Adapter name */
-  adapter: string;
 
-  /*
+/**
+ * Condition represents a single status condition
+ * Used in both AdapterStatus.conditions[] (with standard types like "Available")
+ * and ClusterStatus.conditions[] (with semantic types like "ValidationSuccessful")
+ */
+model Condition {
+  /**
    * Condition type
+   * In AdapterStatus: Standard Kubernetes types ("Available", "Applied", "Health")
+   * In ClusterStatus: Semantic types ("ValidationSuccessful", "DNSReady", etc.)
    */
   type: string;
 
@@ -28,80 +29,77 @@ model ConditionBase {
    */
   message?: string;
 
-  /*
-   * Generation of the spec that triggered the adapter work
+  /**
+   * Generation of the spec that this condition reflects
    */
   observed_generation: int32;
 
-  /** Time when the condition was created
-   * - In an adapter reporting conditions `updated_at==created_at`
-   * - In the API, `created_at` doesn't change with new updates from adapters
+  /**
+   * When this condition was first created (API-managed)
    */
   @format("date-time") created_at: string;
 
-  /** Time when the condition was updated
+  /**
+   * When this condition was last updated (API-managed)
    */
   @format("date-time") last_updated_time: string;
+
+  /**
+   * When this condition last transitioned status (API-managed)
+   */
+  @format("date-time") last_transition_time?: string;
 }
 
-/** StatusAvailable is the status condition from an adapter that is used by CLM to compute the phase.
- * `phase=ready` when all adaptors report `Available=true`
+/**
+ * Condition data for create/update requests (from adapters)
  */
-model ConditionAvailable extends ConditionBase {
-  type: "Available";
-}
-
-model Condition {
-  ...ConditionBase;
-
-  /**
-   * When this condition last transitioned (computed by service when status changes)
-   */
-  last_transition_time?: utcDateTime;
-}
-
 model ConditionRequest {
-  ...ConditionBase;
-}
-
-model AdapterStatusCreateRequest {
-  /**
-   * Adapter identifier
-   */
-  adapter: string;
-
-  /**
-   * Which cluster generation this status reflects
-   */
+  type: string;
+  status: "True" | "False" | "Unknown";
+  reason?: string;
+  message?: string;
   observed_generation: int32;
 
-  conditions: Condition[];
-
   /**
-   * Adapter-specific data
+   * When the adapter observed this condition
+   * API will use this to set created_at, last_updated_time, last_transition_time
    */
-  data?: Record<unknown>;
-
-  /**
-   * Job execution metadata
-   */
-  metadata?: Record<unknown>;
+  @format("date-time") observed_at: string;
 }
 
+/**
+ * AdapterStatus represents the complete status report from an adapter
+ * Contains multiple conditions, job metadata, and adapter-specific data
+ */
 @example(exampleAdapterStatus)
 model AdapterStatus {
-  /** Name of the adapter that generated this status (Validator, DNS...) */
+  /**
+   * Adapter name (e.g., "validator", "dns", "provisioner")
+   */
   adapter: string;
 
   /**
-   * Which generation for an entity (Clusters, NodePools) was current at the time of creating this status
+   * Which generation of the resource this status reflects
    */
   observed_generation: int32;
 
   /**
    * Kubernetes-style conditions tracking adapter state
+   * Typically includes: Available, Applied, Health
    */
   conditions: Condition[];
+
+  /**
+   * Job execution metadata
+   */
+  metadata?: {
+    job_name?: string;
+    job_namespace?: string;
+    attempt?: int32;
+    @format("date-time") started_at?: string;
+    @format("date-time") completed_at?: string;
+    duration?: string;
+  };
 
   /**
    * Adapter-specific data (structure varies by adapter type)
@@ -109,18 +107,40 @@ model AdapterStatus {
   data?: Record<unknown>;
 
   /**
-   * Metadata about the adapter job/execution
+   * When this adapter status was first created (API-managed)
    */
+  @format("date-time") created_at: string;
+
+  /**
+   * When this adapter status was last updated (API-managed)
+   */
+  @format("date-time") last_updated_time: string;
+}
+
+/**
+ * Request payload for creating/updating adapter status
+ */
+@example(exampleAdapterStatusCreateRequest)
+model AdapterStatusCreateRequest {
+  adapter: string;
+  observed_generation: int32;
+  conditions: ConditionRequest[];
   metadata?: {
     job_name?: string;
     job_namespace?: string;
     attempt?: int32;
-    started_at?: string;
-    completed_at?: string;
+    @format("date-time") started_at?: string;
+    @format("date-time") completed_at?: string;
     duration?: string;
   };
+  data?: Record<unknown>;
 }
 
+/**
+ * List of adapter statuses with pagination metadata
+ */
+@example(exampleAdapterStatusList)
 model AdapterStatusList extends List {
+  kind: "AdapterStatusList";
   items: AdapterStatus[];
 }

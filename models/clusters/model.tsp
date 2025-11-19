@@ -21,42 +21,42 @@ model ClusterBase extends APIResource {
 }
 
 /**
- * Cluster status aggregation from all adapters.
+ * Cluster status computed from all status conditions.
  *
  * This object is computed by the service and CANNOT be modified directly.
- * It is aggregated from adapter status updates posted to `/clusters/{id}/statuses`.
+ * It is aggregated from condition updates posted to `/clusters/{id}/statuses`.
  *
- * Provides quick overview of which adapters have reported and aggregated phase.
+ * Provides quick overview of all reported conditions and aggregated phase.
  */
 model ClusterStatus {
   /**
    * Current cluster phase (native database column).
-   * Updated when adapters report status.
-   * Note: status.phase provides aggregated view from all adapter conditions.
+   * Updated when conditions are reported.
+   * Note: status.phase provides aggregated view from all conditions.
    */
   phase: "NotReady" | "Ready" | "Failed";
 
   /**
-   * When cluster last transitioned (updated by adapters, used by Sentinel for backoff)
-   * Updated when adapters report status if the phase changes
+   * When cluster last transitioned (used by Sentinel for backoff)
+   * Updated when conditions are reported if the phase changes
    */
   @format("date-time") last_transition_time: string;
 
   /**
-   * Last generation processed by adapters
-   * Updated when adapters report status.
-   * This will be the lowest value of each adapter's observed_generation values
+   * Last generation processed
+   * Updated when conditions are reported.
+   * This will be the lowest value of each condition's observed_generation values
    * The phase value is based on this generation
    */
   observed_generation: int32;
 
-  /** Time of the last complete report from adapters
-   * Updated when adapters report status.
-   * Oldest `last_updated_time` from the adapter conditions
+  /** Time of the last update
+   * Updated when conditions are reported.
+   * Most recent `last_updated_time` from the conditions
    */
   @format("date-time") last_updated_time: string;
 
-  adapters: ConditionAvailable[];
+  conditions: Condition[];
 }
 
 @example(exampleCluster)
