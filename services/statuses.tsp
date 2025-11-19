@@ -14,7 +14,7 @@ namespace HyperFleet;
 //@tag("Cluster statuses")
 interface ClusterStatuses{
   /**
-   * Returns current status object for each adapter that has reported status
+   * Returns adapter status reports for this cluster
    */
   @route("")
   @get
@@ -29,16 +29,16 @@ interface ClusterStatuses{
   ): Body<AdapterStatusList> | NotFoundResponse;
 
   /**
-   * Adapter creates its initial status object for this cluster.
-   * Returns 409 if adapter already has a status object for this cluster 
+   * Adapter creates or updates its status report for this cluster.
+   * If adapter already has a status, it will be updated (upsert by adapter name).
    *
-   * Response includes the status id and href for future operations.
-   * Adapter should store the returned id/href to update its status later.
+   * Response includes the full adapter status with all conditions.
+   * Adapter should call this endpoint every time it evaluates the cluster.
    *
    */
   @route("")
   @post
-  @summary("Create adapter status")
+  @summary("Create or update adapter status")
   @operationId("postClusterStatuses")
   postClusterStatuses(
     /**
@@ -59,7 +59,7 @@ interface ClusterStatuses{
 @route("/clusters/{cluster_id}/nodepools/{nodepool_id}/statuses")
 interface NodePoolStatuses{
   /**
-   * Returns current status object for each adapter that has reported status
+   * Returns adapter status reports for this nodepool
    */
   @route("")
   @get
@@ -75,16 +75,16 @@ interface NodePoolStatuses{
   ): Body<AdapterStatusList> | Error;
 
   /**
-   * Adapter creates its initial status object for this cluster.
-   * Returns 409 if adapter already has a status object for this cluster 
+   * Adapter creates or updates its status report for this nodepool.
+   * If adapter already has a status, it will be updated (upsert by adapter name).
    *
-   * Response includes the status id and href for future operations.
-   * Adapter should store the returned id/href to update its status later.
+   * Response includes the full adapter status with all conditions.
+   * Adapter should call this endpoint every time it evaluates the nodepool.
    *
    */
   @route("")
   @post
-  @summary("Create adapter status")
+  @summary("Create or update adapter status")
   @operationId("postNodePoolStatuses")
   postNodePoolStatuses(
     /**

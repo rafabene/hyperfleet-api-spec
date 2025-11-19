@@ -1,49 +1,153 @@
 import "../../models/statuses/model.tsp";
+
+// Example AdapterStatus for validator adapter
 const exampleAdapterStatus: AdapterStatus = (#{
   adapter: "validator",
   observed_generation: 1,
   conditions: #[
     #{
-      adapter: "validator",
       type: "Available",
       status: "True",
       reason: "All validations passed",
       message: "All 30 validation tests passed",
       observed_generation: 1,
-      created_at: "2021-01-01T00:00:00Z",
-      last_updated_time: "2021-01-01T00:00:00Z",
+      created_at: "2021-01-01T10:00:00Z",
+      last_updated_time: "2021-01-01T10:00:00Z",
+      last_transition_time: "2021-01-01T10:00:00Z",
     },
     #{
-      adapter: "validator",
       type: "Applied",
       status: "True",
       reason: "Validation job applied",
       message: "Validation job applied successfully",
       observed_generation: 1,
-      created_at: "2021-01-01T00:00:00Z",
-      last_updated_time: "2021-01-01T00:00:00Z",
+      created_at: "2021-01-01T10:00:00Z",
+      last_updated_time: "2021-01-01T10:00:00Z",
+      last_transition_time: "2021-01-01T10:00:00Z",
     },
     #{
-      adapter: "validator",
       type: "Health",
       status: "True",
       reason: "Validation job healthy",
       message: "Validation job is healthy",
       observed_generation: 1,
-      created_at: "2021-01-01T00:00:00Z",
-      last_updated_time: "2021-01-01T00:00:00Z",
+      created_at: "2021-01-01T10:00:00Z",
+      last_updated_time: "2021-01-01T10:00:00Z",
+      last_transition_time: "2021-01-01T10:00:00Z",
     }
   ],
-  data: #{
-    providerProperty1: "providerValue1",
-    providerProperty2: "providerValue2",
-  },
   metadata: #{
-    job_name: "validator-job",
-    job_namespace: "default",
+    job_name: "validator-job-abc123",
+    job_namespace: "hyperfleet-system",
     attempt: 1,
-    started_at: "2021-01-01T00:00:00Z",
-    completed_at: "2021-01-01T00:00:00Z",
-    duration: "10s",
+    started_at: "2021-01-01T10:00:00Z",
+    completed_at: "2021-01-01T10:02:00Z",
+    duration: "2m",
   },
+  data: #{
+    validation_results: #{
+      total_tests: 30,
+      passed: 30,
+      failed: 0,
+    },
+  },
+  created_at: "2021-01-01T10:00:00Z",
+  last_updated_time: "2021-01-01T10:02:00Z",
+});
+
+// Example AdapterStatusCreateRequest (for POST /clusters/{id}/statuses)
+const exampleAdapterStatusCreateRequest: AdapterStatusCreateRequest = (#{
+  adapter: "validator",
+  observed_generation: 1,
+  conditions: #[
+    #{
+      type: "Available",
+      status: "True",
+      reason: "All validations passed",
+      message: "All 30 validation tests passed",
+      observed_generation: 1,
+      observed_at: "2021-01-01T10:00:00Z",
+    },
+    #{
+      type: "Applied",
+      status: "True",
+      reason: "Validation job applied",
+      message: "Validation job applied successfully",
+      observed_generation: 1,
+      observed_at: "2021-01-01T10:00:00Z",
+    },
+    #{
+      type: "Health",
+      status: "True",
+      reason: "Validation job healthy",
+      message: "Validation job is healthy",
+      observed_generation: 1,
+      observed_at: "2021-01-01T10:00:00Z",
+    }
+  ],
+  metadata: #{
+    job_name: "validator-job-abc123",
+    job_namespace: "hyperfleet-system",
+    attempt: 1,
+    started_at: "2021-01-01T10:00:00Z",
+    completed_at: "2021-01-01T10:02:00Z",
+    duration: "2m",
+  },
+  data: #{
+    validation_results: #{
+      total_tests: 30,
+      passed: 30,
+      failed: 0,
+    },
+  },
+});
+
+// Example AdapterStatusList response (for GET /clusters/{id}/statuses)
+const exampleAdapterStatusList: AdapterStatusList = (#{
+  kind: "AdapterStatusList",
+  page: 1,
+  size: 2,
+  total: 2,
+  items: #[
+    #{
+      adapter: "validator",
+      observed_generation: 1,
+      conditions: #[
+        #{
+          type: "Available",
+          status: "True",
+          reason: "All validations passed",
+          message: "All 30 validation tests passed",
+          observed_generation: 1,
+          created_at: "2021-01-01T10:00:00Z",
+          last_updated_time: "2021-01-01T10:00:00Z",
+          last_transition_time: "2021-01-01T10:00:00Z",
+        },
+      ],
+      metadata: #{
+        job_name: "validator-job-abc123",
+        duration: "2m",
+      },
+      created_at: "2021-01-01T10:00:00Z",
+      last_updated_time: "2021-01-01T10:02:00Z",
+    },
+    #{
+      adapter: "dns",
+      observed_generation: 1,
+      conditions: #[
+        #{
+          type: "Available",
+          status: "True",
+          reason: "DNS configured",
+          message: "DNS records created",
+          observed_generation: 1,
+          created_at: "2021-01-01T10:01:00Z",
+          last_updated_time: "2021-01-01T10:01:00Z",
+          last_transition_time: "2021-01-01T10:01:00Z",
+        },
+      ],
+      created_at: "2021-01-01T10:01:00Z",
+      last_updated_time: "2021-01-01T10:01:30Z",
+    },
+  ],
 });

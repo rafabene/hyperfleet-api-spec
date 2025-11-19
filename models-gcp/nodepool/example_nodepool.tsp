@@ -1,0 +1,70 @@
+import "../../aliases-gcp.tsp";
+import "../../models/nodepools/model.tsp";
+
+const exampleNodePool: NodePool = #{
+  kind: "NodePool",
+  id: "nodepool-123",
+  href: "https://api.hyperfleet.com/v1/nodepools/nodepool-123",
+  name: "worker-pool-1",
+  labels: #{ environment: "production", pooltype: "worker" },
+  spec: #{
+    platform: #{
+      type: "gcp",
+      gcp: #{
+        machineType: "n1-standard-4",
+        diskSize: 100,
+        diskType: "pd-standard",
+        zones: #["us-central1-a", "us-central1-b"],
+        preemptible: false,
+        labels: #{
+          team: "platform",
+          managedby: "hyperfleet",
+        },
+      },
+    },
+    nodeCount: 3,
+    autoscaling: #{
+      enabled: true,
+      minNodes: 1,
+      maxNodes: 10,
+      targetCPUUtilization: 80,
+    },
+  },
+  created_at: "2021-01-01T00:00:00Z",
+  updated_at: "2021-01-01T00:00:00Z",
+  created_by: "user-123@example.com",
+  updated_by: "user-123@example.com",
+  owner_references: #{
+    id: "cluster-123",
+    kind: "Cluster",
+    href: "https://api.hyperfleet.com/v1/clusters/cluster-123",
+  },
+  status: #{
+    phase: "Ready",
+    last_transition_time: "2021-01-01T10:00:00Z",
+    observed_generation: 1,
+    last_updated_time: "2021-01-01T10:02:00Z",
+    conditions: #[
+      #{
+        type: "ValidationSuccessful",
+        status: "True",
+        reason: "All validations passed",
+        message: "NodePool validation passed",
+        observed_generation: 1,
+        created_at: "2021-01-01T10:00:00Z",
+        last_updated_time: "2021-01-01T10:00:00Z",
+        last_transition_time: "2021-01-01T10:00:00Z",
+      },
+      #{
+        type: "ScalingReady",
+        status: "True",
+        reason: "Nodes scaled successfully",
+        message: "NodePool has 3 nodes running",
+        observed_generation: 1,
+        created_at: "2021-01-01T10:01:00Z",
+        last_updated_time: "2021-01-01T10:01:00Z",
+        last_transition_time: "2021-01-01T10:01:00Z",
+      },
+    ],
+  },
+};

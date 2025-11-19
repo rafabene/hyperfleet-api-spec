@@ -33,7 +33,7 @@ interface Clusters {
    *
    * **Note**: The `status` object in the response is read-only and computed by the service.
    * It is NOT part of the request body. Initially, status.phase will be "NotReady" and
-   * status.adapters will be empty until adapters POST their status.
+   * status.conditions will be empty until status conditions are POSTed.
    *
    */
   @route("")
