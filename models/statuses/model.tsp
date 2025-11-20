@@ -4,13 +4,13 @@ import "./example_adapter_status.tsp";
 /**
  * Condition represents a single status condition
  * Used in both AdapterStatus.conditions[] (with standard types like "Available")
- * and ClusterStatus.conditions[] (with semantic types like "ValidationSuccessful")
+ * and ClusterStatus.conditions[] (with semantic types like "ValidationSuccessful", "DNSSuccessful", etc.)
  */
 model Condition {
   /**
    * Condition type
    * In AdapterStatus: Standard Kubernetes types ("Available", "Applied", "Health")
-   * In ClusterStatus: Semantic types ("ValidationSuccessful", "DNSReady", etc.)
+   * In ClusterStatus: Semantic types ("ValidationSuccessful", "DNSSuccessful", "NodePoolSuccessful", etc.)
    */
   type: string;
 
@@ -37,7 +37,7 @@ model Condition {
   /**
    * When this condition was first created (API-managed)
    */
-  @format("date-time") created_at: string;
+  @format("date-time") created_time: string;
 
   /**
    * When this condition was last updated (API-managed)
@@ -62,9 +62,9 @@ model ConditionRequest {
 
   /**
    * When the adapter observed this condition
-   * API will use this to set created_at, last_updated_time, last_transition_time
+   * API will use this to set created_time, last_updated_time, last_transition_time
    */
-  @format("date-time") observed_at: string;
+  @format("date-time") observed_time: string;
 }
 
 /**
@@ -96,8 +96,8 @@ model AdapterStatus {
     job_name?: string;
     job_namespace?: string;
     attempt?: int32;
-    @format("date-time") started_at?: string;
-    @format("date-time") completed_at?: string;
+    @format("date-time") started_time?: string;
+    @format("date-time") completed_time?: string;
     duration?: string;
   };
 
@@ -109,7 +109,7 @@ model AdapterStatus {
   /**
    * When this adapter status was first created (API-managed)
    */
-  @format("date-time") created_at: string;
+  @format("date-time") created_time: string;
 
   /**
    * When this adapter status was last updated (API-managed)
@@ -129,8 +129,8 @@ model AdapterStatusCreateRequest {
     job_name?: string;
     job_namespace?: string;
     attempt?: int32;
-    @format("date-time") started_at?: string;
-    @format("date-time") completed_at?: string;
+    @format("date-time") started_time?: string;
+    @format("date-time") completed_time?: string;
     duration?: string;
   };
   data?: Record<unknown>;
