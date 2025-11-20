@@ -60,8 +60,8 @@ model APIResource extends ObjectReference {
     labels?: Record<string>;
 }
 model APICreatedResource {
-    @format("date-time") created_at: string;
-    @format("date-time") updated_at: string;
+    @format("date-time") created_time: string;
+    @format("date-time") updated_time: string;
     @format("email") created_by: string;
     @format("email") updated_by: string;
 }
@@ -91,7 +91,7 @@ model QueryParams extends SearchParams {
     pageSize?: int32 = 20;
 
     @query
-    orderBy?: string = "created_at";
+    orderBy?: string = "created_time";
 
     @query
     order?: OrderDirection = OrderDirection.desc;
