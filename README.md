@@ -6,6 +6,47 @@ Access directly to the latest generated contract:
 - core: https://openshift-hyperfleet.github.io/hyperfleet-api-spec/
 - GCP: https://openshift-hyperfleet.github.io/hyperfleet-api-spec/gcp.html
 
+## Consuming the API Specifications
+
+### Latest Stable Release (Recommended for Production)
+
+Download the latest stable OpenAPI specifications directly from GitHub Releases:
+
+**Direct URLs** (always get the latest stable version):
+- Core: `https://github.com/openshift-hyperfleet/hyperfleet-api-spec/releases/latest/download/core-openapi.yaml`
+- GCP: `https://github.com/openshift-hyperfleet/hyperfleet-api-spec/releases/latest/download/gcp-openapi.yaml`
+
+**Download examples**:
+```bash
+# Core API
+curl -L -O https://github.com/openshift-hyperfleet/hyperfleet-api-spec/releases/latest/download/core-openapi.yaml
+
+# GCP API
+curl -L -O https://github.com/openshift-hyperfleet/hyperfleet-api-spec/releases/latest/download/gcp-openapi.yaml
+```
+
+**Use in code generation** (always uses latest stable version):
+```bash
+# Generate Go client from Core API
+openapi-generator generate -i https://github.com/openshift-hyperfleet/hyperfleet-api-spec/releases/latest/download/core-openapi.yaml -g go -o ./client
+
+# Generate Python client from GCP API
+openapi-generator generate -i https://github.com/openshift-hyperfleet/hyperfleet-api-spec/releases/latest/download/gcp-openapi.yaml -g python -o ./client
+```
+
+### Version-Specific Downloads
+
+To download a specific version (e.g., v1.0.0):
+```bash
+# Core API
+curl -L -O https://github.com/openshift-hyperfleet/hyperfleet-api-spec/releases/download/v1.0.0/core-openapi.yaml
+
+# GCP API
+curl -L -O https://github.com/openshift-hyperfleet/hyperfleet-api-spec/releases/download/v1.0.0/gcp-openapi.yaml
+```
+
+**See all releases**: https://github.com/openshift-hyperfleet/hyperfleet-api-spec/releases
+
 
 ## Repository Structure
 
