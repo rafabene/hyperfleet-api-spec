@@ -1,14 +1,30 @@
 # HyperFleet OpenAPI spec
 
-This project hosts the TypeSpec files to generate the HyperFleet OpenAPI specifications. The repository is organized to support multiple service variants (core, GCP, etc.) while sharing common models and interfaces.
+This repository supports the development of the Hyperfleet OpenAPI contract, but is not the source-of-truth for the OpenAPI contract.
 
-Access directly to the latest generated contract:
-- core: https://openshift-hyperfleet.github.io/hyperfleet-api-spec/
+This project hosts the TypeSpec files to generate the HyperFleet OpenAPI specifications. Typescpec is an implementation detail providing better ergonomics than writing contracts in plain YAML, specially when dealing with contract variants that we need to keep aligned. The repository is organized to support multiple service variants (core, GCP, etc.) while sharing common models and interfaces.
+
+Access to the OpenAPI contract source of truth in hyperfleet-api repository:
+- https://openshift-hyperfleet.github.io/hyperfleet-api-spec/index.html
+
+Access directly to the latest generated contract in this repository:
+- core: https://openshift-hyperfleet.github.io/hyperfleet-api-spec/core.html
 - GCP: https://openshift-hyperfleet.github.io/hyperfleet-api-spec/gcp.html
 
 ## Consuming the API Specifications
 
-### Latest Stable Release (Recommended for Production)
+### Source of truth (Production contract)
+
+The OpenAPI contract that gets promoted to production is the one at:
+- https://raw.githubusercontent.com/openshift-hyperfleet/hyperfleet-api/refs/heads/main/openapi/openapi.yaml 
+
+**Download examples**:
+```bash
+curl -L -O https://github.com/openshift-hyperfleet/hyperfleet-api/releases/latest/download/openapi.yaml
+
+```
+
+### Latest Releases (Recommended for development)
 
 Download the latest stable OpenAPI specifications directly from GitHub Releases:
 
