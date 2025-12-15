@@ -4,6 +4,7 @@ import "../../aliases.tsp";
 
 model NodePoolBase {
   ...APIResource;
+
   /**
    * NodePool name (unique in a cluster)
    */
@@ -54,21 +55,26 @@ model NodePoolStatus {
 }
 
 @example(exampleNodePool)
-model NodePool extends NodePoolBase{
+model NodePool extends NodePoolBase {
+  ...APICreatedResource;
 
-    ...APICreatedResource;
-    owner_references: ObjectReference;
+  /**
+   * Generation field is updated on customer updates, reflecting the version of the "intent" of the customer
+   */
+  @minValue(1)
+  generation: int32;
 
-    status: NodePoolStatus;
+  owner_references: ObjectReference;
+  status: NodePoolStatus;
 }
 
 @example(exampleNodePoolCreateRequest)
 model NodePoolCreateRequest {
-    ...NodePoolBase;
+  ...NodePoolBase;
 }
 
 model NodePoolCreateResponse {
-    ...NodePool
+  ...NodePool;
 }
 
 model NodePoolList extends List {

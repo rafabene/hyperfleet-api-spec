@@ -958,6 +958,7 @@ components:
         - updated_time
         - created_by
         - updated_by
+        - generation
         - owner_references
         - status
       properties:
@@ -973,6 +974,11 @@ components:
         updated_by:
           type: string
           format: email
+        generation:
+          type: integer
+          format: int32
+          minimum: 1
+          description: Generation field is updated on customer updates, reflecting the version of the "intent" of the customer
         owner_references:
           $ref: '#/components/schemas/ObjectReference'
         status:
@@ -987,6 +993,7 @@ components:
         labels:
           environment: production
           pooltype: worker
+        generation: 1
         spec:
           platform:
             type: gcp
@@ -1129,6 +1136,7 @@ components:
         - updated_time
         - created_by
         - updated_by
+        - generation
         - owner_references
         - status
         - name
@@ -1146,6 +1154,11 @@ components:
         updated_by:
           type: string
           format: email
+        generation:
+          type: integer
+          format: int32
+          minimum: 1
+          description: Generation field is updated on customer updates, reflecting the version of the "intent" of the customer
         owner_references:
           $ref: '#/components/schemas/ObjectReference'
         status:
