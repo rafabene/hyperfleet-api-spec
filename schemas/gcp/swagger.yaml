@@ -51,7 +51,12 @@ paths:
           name: order
           required: false
           type: string
-        - in: query
+        - description: >-
+            Filter results using TSL (Tree Search Language) query syntax.
+
+            Examples: `status.phase='NotReady'`, `name in ('c1','c2')`,
+            `labels.region='us-east'`
+          in: query
           name: search
           required: false
           type: string
@@ -110,7 +115,12 @@ paths:
       produces:
         - application/json
       parameters:
-        - in: query
+        - description: >-
+            Filter results using TSL (Tree Search Language) query syntax.
+
+            Examples: `status.phase='NotReady'`, `name in ('c1','c2')`,
+            `labels.region='us-east'`
+          in: query
           name: search
           required: false
           type: string
@@ -165,7 +175,12 @@ paths:
           name: order
           required: false
           type: string
-        - in: query
+        - description: >-
+            Filter results using TSL (Tree Search Language) query syntax.
+
+            Examples: `status.phase='NotReady'`, `name in ('c1','c2')`,
+            `labels.region='us-east'`
+          in: query
           name: search
           required: false
           type: string
@@ -282,7 +297,12 @@ paths:
           name: order
           required: false
           type: string
-        - in: query
+        - description: >-
+            Filter results using TSL (Tree Search Language) query syntax.
+
+            Examples: `status.phase='NotReady'`, `name in ('c1','c2')`,
+            `labels.region='us-east'`
+          in: query
           name: search
           required: false
           type: string
@@ -334,7 +354,12 @@ paths:
           name: order
           required: false
           type: string
-        - in: query
+        - description: >-
+            Filter results using TSL (Tree Search Language) query syntax.
+
+            Examples: `status.phase='NotReady'`, `name in ('c1','c2')`,
+            `labels.region='us-east'`
+          in: query
           name: search
           required: false
           type: string
@@ -379,7 +404,12 @@ paths:
           name: order
           required: false
           type: string
-        - in: query
+        - description: >-
+            Filter results using TSL (Tree Search Language) query syntax.
+
+            Examples: `status.phase='NotReady'`, `name in ('c1','c2')`,
+            `labels.region='us-east'`
+          in: query
           name: search
           required: false
           type: string
@@ -1535,6 +1565,11 @@ x-components:
       required: false
       type: integer
     SearchParams:
+      description: >-
+        Filter results using TSL (Tree Search Language) query syntax.
+
+        Examples: `status.phase='NotReady'`, `name in ('c1','c2')`,
+        `labels.region='us-east'`
       in: query
       name: search
       required: false
