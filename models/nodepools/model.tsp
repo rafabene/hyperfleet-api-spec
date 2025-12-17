@@ -8,6 +8,9 @@ model NodePoolBase {
   /**
    * NodePool name (unique in a cluster)
    */
+  @minLength(3)
+  @maxLength(63)
+  @pattern("^[a-z0-9]([-a-z0-9]*[a-z0-9])?$")
   name: string;
 
   /** Cluster specification

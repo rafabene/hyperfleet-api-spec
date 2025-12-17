@@ -806,8 +806,8 @@ definitions:
       name:
         description: Cluster name (unique)
         maxLength: 63
-        minLength: 1
-        pattern: '^[a-z0-9-]+$'
+        minLength: 3
+        pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
         type: string
       spec:
         allOf:
@@ -1210,6 +1210,9 @@ definitions:
         type: object
       name:
         description: NodePool name (unique in a cluster)
+        maxLength: 63
+        minLength: 3
+        pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
         type: string
       spec:
         allOf:
@@ -1268,6 +1271,9 @@ definitions:
         type: object
       name:
         description: NodePool name (unique in a cluster)
+        maxLength: 63
+        minLength: 3
+        pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
         type: string
       spec:
         allOf:
@@ -1314,6 +1320,9 @@ definitions:
         type: object
       name:
         description: NodePool name (unique in a cluster)
+        maxLength: 63
+        minLength: 3
+        pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
         type: string
       owner_references:
         $ref: '#/definitions/ObjectReference'

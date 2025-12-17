@@ -8,9 +8,9 @@ model ClusterBase extends APIResource {
   /**
    * Cluster name (unique)
    */
-  @minLength(1)
+  @minLength(3)
   @maxLength(63)
-  @pattern("^[a-z0-9-]+$")
+  @pattern("^[a-z0-9]([-a-z0-9]*[a-z0-9])?$")
   name: string;
 
   /** Cluster specification
