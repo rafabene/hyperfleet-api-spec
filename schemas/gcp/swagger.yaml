@@ -71,6 +71,8 @@ paths:
           description: An unexpected error response.
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - BearerAuth: []
       operationId: getClusters
       summary: List clusters
     post:
@@ -97,6 +99,8 @@ paths:
           description: An unexpected error response.
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - BearerAuth: []
       description: >-
         Create a new cluster resource.
 
@@ -139,6 +143,8 @@ paths:
           description: An unexpected error response.
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - BearerAuth: []
       operationId: getClusterById
       summary: Get cluster by ID
   '/api/hyperfleet/v1/clusters/{cluster_id}/nodepools':
@@ -1533,6 +1539,11 @@ definitions:
       - key
       - effect
     type: object
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 tags: []
 x-components:
   parameters:
