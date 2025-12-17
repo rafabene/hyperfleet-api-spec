@@ -13,7 +13,7 @@ model NodePoolBase {
   @pattern("^[a-z0-9]([-a-z0-9]*[a-z0-9])?$")
   name: string;
 
-  /** Cluster specification
+  /** NodePool specification
    * CLM doesn't know how to unmarshall the spec, it only stores and forwards to adapters to do their job
    * But CLM will validate the schema before accepting the request
    */

@@ -1218,7 +1218,7 @@ definitions:
         allOf:
           - $ref: '#/definitions/NodePoolSpec'
         description: >-
-          Cluster specification
+          NodePool specification
 
           CLM doesn't know how to unmarshall the spec, it only stores and
           forwards to adapters to do their job
@@ -1279,7 +1279,7 @@ definitions:
         allOf:
           - $ref: '#/definitions/NodePoolSpec'
         description: >-
-          Cluster specification
+          NodePool specification
 
           CLM doesn't know how to unmarshall the spec, it only stores and
           forwards to adapters to do their job
@@ -1330,7 +1330,7 @@ definitions:
         allOf:
           - $ref: '#/definitions/NodePoolSpec'
         description: >-
-          Cluster specification
+          NodePool specification
 
           CLM doesn't know how to unmarshall the spec, it only stores and
           forwards to adapters to do their job
