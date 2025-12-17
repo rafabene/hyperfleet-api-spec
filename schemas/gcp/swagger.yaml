@@ -201,6 +201,8 @@ paths:
           description: An unexpected error response.
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - BearerAuth: []
       description: Returns the list of all nodepools for a cluster
       operationId: getNodePoolsByClusterId
       summary: List all nodepools for cluster
@@ -233,6 +235,8 @@ paths:
           description: An unexpected error response.
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - BearerAuth: []
       description: Create a NodePool for a cluster
       operationId: createNodePool
       summary: Create nodepool
@@ -262,6 +266,8 @@ paths:
           description: An unexpected error response.
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - BearerAuth: []
       description: Returns specific nodepool
       operationId: getNodePoolById
       summary: Get nodepool by ID
@@ -378,6 +384,8 @@ paths:
           description: The server could not understand the request due to invalid syntax.
         '404':
           description: The server cannot find the requested resource.
+      security:
+        - BearerAuth: []
       description: Returns adapter status reports for this cluster
       operationId: getClusterStatuses
       summary: List all adapter statuses for cluster
@@ -430,6 +438,8 @@ paths:
           description: An unexpected error response.
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - BearerAuth: []
       description: Returns the list of all nodepools
       operationId: getNodePools
       summary: List all nodepools for cluster
