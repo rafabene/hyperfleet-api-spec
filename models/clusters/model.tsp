@@ -67,7 +67,7 @@ model Cluster {
 
 @example(exampleClusterCreateRequest)
 model ClusterCreateRequest  {
-    ...ClusterBase
+    ...ClusterBase;
 }
 
 model ClusterList {

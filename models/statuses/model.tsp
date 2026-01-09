@@ -45,7 +45,7 @@ model ConditionBase {
  * since all conditions in one AdapterStatus share the same observed generation
  */
 model AdapterCondition {
-  ...ConditionBase
+  ...ConditionBase;
   // No additional fields - inherits all fields from ConditionBase
 }
 
